@@ -277,26 +277,7 @@ void Game::Update()
     next = Block::head;
 }
 
-/*void Game::renderScore(SDL_Renderer* renderer, int growing) {
-	//SDL_Color Black = { 0, 0, 0 };
-	TTF_Font* font = TTF_OpenFont((char*)"word.ttf", 200);
-	if (font == NULL) {
-		cout << "Font loading error" << endl;
-		return;
-	}
-	// In chữ
-	SDL_Surface* score = TTF_RenderText_Solid(font, /*doi thanh dang con trỏ *///(string("Score: ") + to_string(growing * 10)).c_str(), Black);
-/*	SDL_Texture* scoreMessage = SDL_CreateTextureFromSurface(renderer, score);
 
-	SDL_Rect scoreRect;
-	scoreRect.w = 100;
-	scoreRect.h = 30;
-	scoreRect.x = ((24* 24) / 2) - (scoreRect.w / 2);
-	scoreRect.y = 0;
-	SDL_RenderCopy(renderer, scoreMessage, NULL, &scoreRect);
-
-	TTF_CloseFont(font);
-}*/
 void Game::Render()
 {
     SDL_Rect block;
@@ -332,7 +313,21 @@ void Game::Render()
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
     }
        SDL_RenderFillRect(renderer, &block);
+	
+	TTF_Font* font = TTF_OpenFont("word.ttf", 23);
+    SDL_Color color = { 255,255,255 };
+
+  std::string title = "Score: " + std::to_string(score) ;
+    font = TTF_OpenFont("word.ttf", 10);
+    SDL_Surface* surface = TTF_RenderText_Solid(font, title.c_str(), color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+SDL_Rect rect = {  SCREEN_WIDTH / 30,  SCREEN_HEIGHT / 30, 128, 96 };
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
+    SDL_RenderPresent(renderer);
+
+	
 }
+
 
 
 void Game::playWAV(std::string link)
